@@ -1,0 +1,17 @@
+{
+  "name": "proj-skeleton",
+  "version": "1.0.0",
+  "description": "Skeleton for angular apps",
+  "authors": [
+    "Pavan"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
