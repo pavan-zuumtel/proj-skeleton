@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 var reload = browserSync.reload;
 // Lint Task
 gulp.task('lint', function() {
-  return gulp.src('app/**/*.js')
+  return gulp.src(['app/**/*.js', '!app/assets/bower_components/**'])
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
@@ -25,7 +25,7 @@ gulp.task('sass', function() {
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
-    .pipe(gulp.dest('app/assets/css'));
+    .pipe(gulp.dest('dist/css'));
 });
 
 // Concatenate and minify JS
@@ -47,10 +47,12 @@ gulp.task('browser-sync', function() {
 
 gulp.task('inject', function() {
   return gulp.src('app/index.html')
-    .pipe(inject(gulp.src(['app/**/*.js', 'app/**/*.css'], {read: false})))
-    .pipe(gulp.dest('app'));
+    .pipe(inject(gulp.src(['./**/*.js', './**/*.css'], {read: false, cwd: __dirname + '/app'} )))
+    .pipe(gulp.dest('./app'));
 });
 gulp.task('watch', function() {
-  gulp.watch('app/**/*', ['lint', 'sass', 'inject'], reload);
+  gulp.watch('app/**/*.js', ['lint'], reload);
+  gulp.watch('app/**/*.css', ['sass'], reload);
+  gulp.watch('app/**/*.html', reload);
 });
 gulp.task('default', ['lint', 'sass', 'browser-sync', 'inject', 'watch']);
